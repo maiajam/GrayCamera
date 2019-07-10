@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Camera2App</string>
+    <string name="take_picture">capture</string>
+    <string name="skip">SKIPE</string>
+    <string name="menulabel_missing">Missing</string>
+    <string name="menulabel_bandaged">Bandaged</string>
+    <string name="menulabel_sixthfinger">Sixth Finger</string>
+</resources>
