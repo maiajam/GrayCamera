@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int viewWidth,viewHight;
     private int height,width;
     private Button skipeButton;
+    private Thread drawThread;
 
     private PopupMenu skipPopUpMenu;
 
@@ -115,9 +116,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-
                 holder.setFormat(PixelFormat.TRANSPARENT);
-                drawFingersPlaces(surfaceHolder);
+              drawFingersPlaces(surfaceHolder);
             }
 
             @Override
@@ -129,25 +129,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void surfaceDestroyed(SurfaceHolder holder) {
 
             }
+
         });
+
+
+        textureView.setOnClickListener(this);
     }
 
 
 
     private void drawFingersPlaces(SurfaceHolder holder) {
+        HelperMethods.DrawFingersShapre(getBaseContext(),holder);
 
-        Canvas canvas = holder.lockCanvas();
-        if (canvas == null) {
-            Log.e(TAG, "Cannot draw onto the canvas as it's null");
-        } else {
-            Size[] size = HelperMethods.getScreenSize(getBaseContext(),cameraDevice);
-            Paint myPaint = new Paint();
-            myPaint.setColor(Color.rgb(4, 20, 50));
-            myPaint.setStrokeWidth(10);
-            myPaint.setStyle(Paint.Style.STROKE);
-            canvas.drawRect(size[0].getWidth()/2 , size[0].getHeight() - 10, size[0].getWidth()/2- 100, 200, myPaint);
-            holder.unlockCanvasAndPost(canvas);
-        }
     }
 
 
@@ -191,7 +184,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
             super.onCaptureCompleted(session, request, result);
-            Toast.makeText(MainActivity.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this,
+                    "Saved:" + file, Toast.LENGTH_SHORT).show();
             createCameraPreview();
         }
     };
@@ -398,11 +392,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v == skipeButton) {
             skipPopUpMenu = new PopupMenu(this, v);
             skipPopUpMenu.getMenuInflater().inflate(R.menu.poup_menu,skipPopUpMenu.getMenu());
-
-            PopupMenuEventHandler skipMenuEvnet = new PopupMenuEventHandler(getBaseContext());
             skipPopUpMenu.setOnMenuItemClickListener(this);
             skipPopUpMenu.show();
+        }else if(v == textureView)
+        {
+            takePicture();
         }
+
     }
 
 

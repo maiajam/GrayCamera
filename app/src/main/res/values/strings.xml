@@ -5,4 +5,10 @@
     <string name="menulabel_missing">Missing</string>
     <string name="menulabel_bandaged">Bandaged</string>
     <string name="menulabel_sixthfinger">Sixth Finger</string>
+    <string name="labe_selectCamera">please ... select the app camera</string>
+    <string name="labe_Welcome">Welcome</string>
+    <string name="labe_FirstVisit">This is Your FIrst Visit</string>
+    <string name="label_frontCam">Front Camera</string>
+    <string name="label_backCam">Back Camera</string>
+    <string name="label_externalCam">External Camera</string>
 </resources>
