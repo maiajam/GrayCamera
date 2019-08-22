@@ -41,6 +41,8 @@ import android.widget.Toast;
 import com.maiajam.camera2app.Helper.AppSharedPrefrnce;
 import com.maiajam.camera2app.Helper.HelperMethods;
 
+import org.opencv.android.OpenCVLoader;
+
 import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -104,6 +106,8 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        OpenCVLoader.initDebug();
         setContentView(R.layout.activity_camera);
         ButterKnife.bind(this);
 

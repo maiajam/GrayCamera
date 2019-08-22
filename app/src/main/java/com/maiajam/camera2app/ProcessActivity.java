@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.maiajam.camera2app.Helper.ProcessThread;
 
+import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -51,9 +52,13 @@ public class ProcessActivity extends AppCompatActivity {
     private Mat newMat;
     private Handler handler;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        OpenCVLoader.initDebug();
         setContentView(R.layout.activity_process);
         ButterKnife.bind(this);
 
