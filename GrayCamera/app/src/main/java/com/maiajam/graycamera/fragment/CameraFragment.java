@@ -31,11 +31,9 @@ public class CameraFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -73,7 +71,8 @@ public class CameraFragment extends Fragment {
         // a camera and start preview from here (otherwise, we wait until the surface is ready in
         // the SurfaceTextureListener).
         if (camraTextureView.isAvailable()) {
-            CameraConfigration.openCamera(getActivity(),camraTextureView.getWidth(),camraTextureView.getHeight(),mBackgroundHandler);
+            CameraConfigration.openCamera(getActivity(),camraTextureView.getWidth(),
+                    camraTextureView.getHeight(),mBackgroundHandler,camraTextureView);
         } else {
             setSurfaceLisnter();
         }

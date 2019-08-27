@@ -1,16 +1,27 @@
 package com.maiajam.graycamera.Helper;
 
 import android.app.Activity;
+import android.os.Build;
+import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.util.Size;
 
+import com.maiajam.graycamera.views.AutoTextureView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.maiajam.graycamera.CameraConfigration.CameraConfigration.checkCameraPermission;
+import static com.maiajam.graycamera.CameraConfigration.CameraConfigration.configureTransform;
+import static com.maiajam.graycamera.CameraConfigration.CameraConfigration.setUpCameraOutputs;
+
 public class HelperMethodes {
+    private static Handler backHandler;
+
     public static int getSelectedCameraId(Activity activity) {
         return 1;
     }
@@ -47,5 +58,15 @@ public class HelperMethodes {
         } else {
             return choices[0];
         }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static void openCamera(Activity activity, int width, int height, Handler backGroundHandler, AutoTextureView textureView) {
+        backHandler = backGroundHandler;
+        checkCameraPermission(activity);
+        setUpCameraOutputs(activity, width, height,textureView);
+        configureTransform(width,height,activity,textureView);
+        openNow();
     }
 }
