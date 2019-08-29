@@ -19,6 +19,8 @@ import com.maiajam.graycamera.Listeners.SurfaceTexuterViewListener;
 import com.maiajam.graycamera.R;
 import com.maiajam.graycamera.views.AutoTextureView;
 
+import static com.maiajam.graycamera.Helper.HelperMethodes.openCamera;
+
 public class CameraFragment extends Fragment {
 
     private View view;
@@ -71,7 +73,7 @@ public class CameraFragment extends Fragment {
         // a camera and start preview from here (otherwise, we wait until the surface is ready in
         // the SurfaceTextureListener).
         if (camraTextureView.isAvailable()) {
-            CameraConfigration.openCamera(getActivity(),camraTextureView.getWidth(),
+            openCamera(getActivity(),camraTextureView.getWidth(),
                     camraTextureView.getHeight(),mBackgroundHandler,camraTextureView);
         } else {
             setSurfaceLisnter();
@@ -80,7 +82,7 @@ public class CameraFragment extends Fragment {
 
     private void setSurfaceLisnter() {
 
-        surfaceListner = new SurfaceTexuterViewListener(getActivity());
+        surfaceListner = new SurfaceTexuterViewListener(getActivity(),mBackgroundHandler,camraTextureView);
         camraTextureView.setSurfaceTextureListener(surfaceListner);
 
     }

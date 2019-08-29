@@ -29,6 +29,7 @@ import com.maiajam.graycamera.Helper.CompareSizesByArea;
 import com.maiajam.graycamera.Helper.Constant;
 import com.maiajam.graycamera.Helper.HelperMethodes;
 import com.maiajam.graycamera.Listeners.ImageAvailableListener;
+import com.maiajam.graycamera.callBack.CameraDeviceStateCallBack;
 import com.maiajam.graycamera.views.AutoTextureView;
 
 import java.util.Arrays;
@@ -43,16 +44,16 @@ public class CameraConfigration {
     public static final int REQUEST_CAMERA_PERMISSION = 100;
     private static CameraManager manager;
     private static int selectedCameraId;
-    private static ImageReader mImageReader;
+    public static ImageReader mImageReader;
     private static ImageAvailableListener imageAvailableListener;
     private static Handler backHandler;
     private static Integer mSensorOrientation;
     private static int MAX_PREVIEW_WIDTH = 1920;
     private static int MAX_PREVIEW_HEIGHT = 1080;
-    private static Size mPreviewSize;
+    public static Size mPreviewSize;
     private static String mCameraId;
     private static Semaphore mCameraOpenCloseLock = new Semaphore(1); // to prevent the app from exiting before closing the camera.
-
+    private static CameraDeviceStateCallBack mStateCallback;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -224,13 +225,15 @@ public class CameraConfigration {
         CameraPreivewTexture.setTransform(matrix);
     }
 
-    public static void opeenNow(Activity activity,Handler mBackgroundHandler)
+    public static void openNow(Activity activity,Handler mBackgroundHandler)
     {
         manager = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
         try {
             if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
                 throw new RuntimeException("Time out waiting to lock camera opening.");
             }
+
+            mStateCallback = new CameraDeviceStateCallBack();
             manager.openCamera(mCameraId, mStateCallback, mBackgroundHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
