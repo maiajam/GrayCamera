@@ -41,9 +41,8 @@ public class HelperMethodes {
         return 1;
     }
 
-    public static void beginTransaction(FragmentManager fragmentManager, int FrameId, Fragment fragment)
-    {
-        fragmentManager.beginTransaction().replace(FrameId,fragment).commit();
+    public static void beginTransaction(FragmentManager fragmentManager, int FrameId, Fragment fragment) {
+        fragmentManager.beginTransaction().replace(FrameId, fragment).commit();
     }
 
     public static Size chooseOptimalSize(Size[] choices, int textureViewWidth,
@@ -80,12 +79,17 @@ public class HelperMethodes {
     public static void openCamera(Activity activity, int width, int height, Handler backGroundHandler, AutoTextureView textureView) {
         backHandler = backGroundHandler;
         checkCameraPermission(activity);
-        setUpCameraOutputs(activity, width, height,textureView);
-        configureTransform(width,height,activity,textureView);
-        openNow(activity,backGroundHandler);
+        setUpCameraOutputs(activity, width, height, textureView);
+        configureTransform(width, height, activity, textureView);
+        openNow(activity, backGroundHandler);
     }
 
-    public static void  createCameraPreviewSession(AutoTextureView CameraPreivewTexture){
+    public static void createCameraPreviewSession(AutoTextureView CameraPreivewTexture,
+                                                  final CaptureRequest mPreviewRequest,
+                                                  final CameraCaptureSession.CaptureCallback mCaptureCallback,
+                                                  final Handler mBackgroundHandler
+
+    ) {
 
         try {
 
@@ -96,14 +100,15 @@ public class HelperMethodes {
             // This is the output Surface we need to start preview.
             surface = new Surface(texture);
             // We set up a CaptureRequest.Builder with the output Surface.
-            mPreviewRequestBuilder =getInstance().getCameraDevice().createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            mPreviewRequestBuilder = getInstance().getCameraDevice().createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
 
             mPreviewRequestBuilder.addTarget(surface);
-            mPreviewRequestBuilder.set(CaptureRequest.JPEG_QUALITY,(byte)100);
+            mPreviewRequestBuilder.set(CaptureRequest.JPEG_QUALITY, (byte) 100);
 
             // Here, we create a CameraCaptureSession for camera preview.
             getInstance().getCameraDevice().createCaptureSession(Arrays.asList(surface, mImageReader.getSurface()),
                     new CameraCaptureSession.StateCallback() {
+
 
                         @RequiresApi(api = Build.VERSION_CODES.P)
                         @Override
@@ -121,10 +126,11 @@ public class HelperMethodes {
                                         CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 
                                 mPreviewRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_TORCH);
-                                mPreviewRequessdtBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_ALWAYS_FLASH);
+                                mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_ALWAYS_FLASH);
 
                                 // Finally, we start displaying the camera preview.
                                 mPreviewRequest = mPreviewRequestBuilder.build();
+
                                 mCaptureSession.setRepeatingRequest(mPreviewRequest,
                                         mCaptureCallback, mBackgroundHandler);
                             } catch (CameraAccessException e) {
@@ -135,7 +141,6 @@ public class HelperMethodes {
                         @Override
                         public void onConfigureFailed(
                                 @NonNull CameraCaptureSession cameraCaptureSession) {
-                            showToast("Failed");
                         }
                     }, null
             );
